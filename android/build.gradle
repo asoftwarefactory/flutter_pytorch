@@ -22,6 +22,11 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
+
+    if (project.android.hasProperty("namespace")) {
+        namespace 'com.aneeqmalik.flutter_pytorch'
+    }
+
     compileSdkVersion 31
 
     compileOptions {
@@ -33,6 +38,7 @@ android {
         minSdkVersion 21
     }
 }
+
 dependencies{
     implementation 'org.pytorch:pytorch_android_lite:1.12.2'
     implementation 'org.pytorch:pytorch_android_torchvision_lite:1.12.2'
