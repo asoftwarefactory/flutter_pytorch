@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:pigeon/pigeon.dart';
 // Build android only
 // flutter pub run pigeon --input pigeons/messages.dart --dart_out lib/pigeon.dart  --java_out android/src/main/java/com/zezo357/pytorch_lite/Pigeon.java --java_package "com.zezo357.pytorch_lite"
@@ -13,7 +15,8 @@ class PyTorchRect {
   double bottom;
   double width;
   double height;
-  PyTorchRect(this.left, this.top, this.width, this.height, this.right, this.bottom);
+  PyTorchRect(
+      this.left, this.top, this.width, this.height, this.right, this.bottom);
 }
 
 class ResultObjectDetection {
