@@ -2,12 +2,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:image/image.dart' as imageLib;
+import 'package:image/image.dart' as image_lib;
 import 'package:path_provider/path_provider.dart';
 
 /// ImageUtils
 class ImageUtils {
-  static Uint8List imageToByteListUint8(imageLib.Image image) {
+  static Uint8List imageToByteListUint8(image_lib.Image image) {
     var width = image.width;
     var height = image.height;
     var convertedBytes = Uint8List(width * height * 3);
@@ -16,16 +16,16 @@ class ImageUtils {
     for (var i = 0; i < width; i++) {
       for (var j = 0; j < height; j++) {
         var pixel = image.getPixel(i, j);
-        buffer[pixelIndex++] = imageLib.getRed(pixel);
-        buffer[pixelIndex++] = imageLib.getGreen(pixel);
-        buffer[pixelIndex++] = imageLib.getBlue(pixel);
+        buffer[pixelIndex++] = image_lib.getRed(pixel);
+        buffer[pixelIndex++] = image_lib.getGreen(pixel);
+        buffer[pixelIndex++] = image_lib.getBlue(pixel);
       }
     }
     return convertedBytes.buffer.asUint8List();
   }
 
   /// Converts a [CameraImage] in YUV420 format to [imageLib.Image] in RGB format
-  static imageLib.Image? convertCameraImage(CameraImage cameraImage) {
+  static image_lib.Image? convertCameraImage(CameraImage cameraImage) {
     if (cameraImage.format.group == ImageFormatGroup.yuv420) {
       return convertYUV420ToImage(cameraImage);
     } else if (cameraImage.format.group == ImageFormatGroup.bgra8888) {
@@ -35,23 +35,23 @@ class ImageUtils {
     }
   }
 
-  /// Converts a [CameraImage] in BGRA888 format to [imageLib.Image] in RGB format
-  static imageLib.Image convertBGRA8888ToImage(CameraImage cameraImage) {
-    imageLib.Image img = imageLib.Image.fromBytes(cameraImage.planes[0].width!,
+  /// Converts a [CameraImage] in BGRA888 format to [image_lib.Image] in RGB format
+  static image_lib.Image convertBGRA8888ToImage(CameraImage cameraImage) {
+    image_lib.Image img = image_lib.Image.fromBytes(cameraImage.planes[0].width!,
         cameraImage.planes[0].height!, cameraImage.planes[0].bytes,
-        format: imageLib.Format.bgra);
+        format: image_lib.Format.bgra);
     return img;
   }
 
-  /// Converts a [CameraImage] in YUV420 format to [imageLib.Image] in RGB format
-  static imageLib.Image convertYUV420ToImage(CameraImage cameraImage) {
+  /// Converts a [CameraImage] in YUV420 format to [image_lib.Image] in RGB format
+  static image_lib.Image convertYUV420ToImage(CameraImage cameraImage) {
     final int width = cameraImage.width;
     final int height = cameraImage.height;
 
     final int uvRowStride = cameraImage.planes[1].bytesPerRow;
     final int? uvPixelStride = cameraImage.planes[1].bytesPerPixel;
 
-    final image = imageLib.Image(width, height);
+    final image = image_lib.Image(width, height);
 
     for (int w = 0; w < width; w++) {
       for (int h = 0; h < height; h++) {
@@ -87,12 +87,11 @@ class ImageUtils {
         (r & 0xff);
   }
 
-  static void saveImage(imageLib.Image image, [int i = 0]) async {
-    List<int> jpeg = imageLib.JpegEncoder().encodeImage(image);
+  static void saveImage(image_lib.Image image, [int i = 0]) async {
+    List<int> jpeg = image_lib.JpegEncoder().encodeImage(image);
     final appDir = await getTemporaryDirectory();
     final appPath = appDir.path;
     final fileOnDevice = File('$appPath/out$i.jpg');
     await fileOnDevice.writeAsBytes(jpeg, flush: true);
-    print('Saved $appPath/out$i.jpg');
   }
 }

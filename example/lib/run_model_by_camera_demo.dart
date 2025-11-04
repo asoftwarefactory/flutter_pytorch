@@ -1,14 +1,16 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pytorch/pigeon.dart';
 import 'package:flutter_pytorch_example/ui/box_widget.dart';
-
 import 'ui/camera_view.dart';
 
 /// [RunModelByCameraDemo] stacks [CameraView] and [BoxWidget]s with bottom sheet for stats
 class RunModelByCameraDemo extends StatefulWidget {
+  const RunModelByCameraDemo({super.key});
+
   @override
-  _RunModelByCameraDemoState createState() => _RunModelByCameraDemoState();
+  State<RunModelByCameraDemo> createState() => _RunModelByCameraDemoState();
 }
 
 class _RunModelByCameraDemoState extends State<RunModelByCameraDemo> {
@@ -58,7 +60,7 @@ class _RunModelByCameraDemoState extends State<RunModelByCameraDemo> {
               builder: (_, ScrollController scrollController) => Container(
                 width: double.maxFinite,
                 decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     borderRadius: BORDER_RADIUS_BOTTOM_SHEET),
                 child: SingleChildScrollView(
                   controller: scrollController,
@@ -66,7 +68,7 @@ class _RunModelByCameraDemoState extends State<RunModelByCameraDemo> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.keyboard_arrow_up,
+                        const Icon(Icons.keyboard_arrow_up,
                             size: 48, color: Colors.orange),
                         (classification != null)
                             ? Padding(
@@ -74,7 +76,7 @@ class _RunModelByCameraDemoState extends State<RunModelByCameraDemo> {
                                 child: Column(
                                   children: [
                                     StatsRow(
-                                        'Classification:', '${classification}'),
+                                        'Classification:', '$classification'),
                                   ],
                                 ),
                               )
@@ -104,8 +106,8 @@ class _RunModelByCameraDemoState extends State<RunModelByCameraDemo> {
   void resultsCallback(List<ResultObjectDetection?> results) {
     setState(() {
       this.results = results;
-      results.forEach((element) {
-        print({
+      for (final _ in results) {
+        /*   print({
           "rect": {
             "left": element?.rect.left,
             "top": element?.rect.top,
@@ -114,8 +116,8 @@ class _RunModelByCameraDemoState extends State<RunModelByCameraDemo> {
             "right": element?.rect.right,
             "bottom": element?.rect.bottom,
           },
-        });
-      });
+        }); */
+      }
     });
   }
 
@@ -135,7 +137,7 @@ class StatsRow extends StatelessWidget {
   final String left;
   final String right;
 
-  StatsRow(this.left, this.right);
+  const StatsRow(this.left, this.right, {super.key});
 
   @override
   Widget build(BuildContext context) {

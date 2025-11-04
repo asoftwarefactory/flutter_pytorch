@@ -4,15 +4,15 @@ import 'package:flutter_pytorch_example/ui/camera_view_singleton.dart';
 
 /// Individual bounding box
 class BoxWidget extends StatelessWidget {
-  ResultObjectDetection result;
-  Color? boxesColor;
-  bool showPercentage;
-  BoxWidget(
-      {Key? key,
-      required this.result,
-      this.boxesColor,
-      this.showPercentage = true})
-      : super(key: key);
+  final ResultObjectDetection result;
+  final Color? boxesColor;
+  final bool showPercentage;
+  const BoxWidget({
+    Key? key,
+    required this.result,
+    this.boxesColor,
+    this.showPercentage = true,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     // Color for bounding box
@@ -56,11 +56,7 @@ class BoxWidget extends StatelessWidget {
             alignment: Alignment.centerRight,
             color: usedColor,
             child: Text(
-              (result.className ?? result.classIndex.toString()) +
-                  "_" +
-                  (showPercentage
-                      ? (result.score * 100).toStringAsFixed(2) + "%"
-                      : ""),
+              "${result.className ?? result.classIndex.toString()}_${showPercentage ? "${(result.score * 100).toStringAsFixed(2)}%" : ""}",
             ),
           ),
           Container(
@@ -68,7 +64,7 @@ class BoxWidget extends StatelessWidget {
             height: result.rect.height.toDouble() * factorY,
             decoration: BoxDecoration(
                 border: Border.all(color: usedColor!, width: 3),
-                borderRadius: BorderRadius.all(Radius.circular(2))),
+                borderRadius: const BorderRadius.all(Radius.circular(2))),
             child: Container(),
           ),
         ],
